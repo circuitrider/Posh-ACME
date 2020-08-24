@@ -1,7 +1,7 @@
 Get-Module Posh-ACME | Remove-Module -Force
 Import-Module Posh-ACME -Force
 
-Describe "Get-PAAuthorizations" {
+Describe "Get-PAAuthorization" {
 
     InModuleScope Posh-ACME {
 
@@ -26,7 +26,7 @@ Describe "Get-PAAuthorizations" {
             Mock Invoke-ACME { return $fakeResponse }
 
             It "Does not throw an error" {
-                { Get-PAAuthorizations 'https://acme.example.com/authz/1' } | Should -Not -Throw
+                { Get-PAAuthorization 'https://acme.example.com/authz/1' } | Should -Not -Throw
             }
 
         }
@@ -50,13 +50,13 @@ Describe "Get-PAAuthorizations" {
             Mock Write-Warning { }
 
             It "Does not throw an error" {
-                { Get-PAAuthorizations 'https://acme.example.com/authz/1' } | Should -Not -Throw
+                { Get-PAAuthorization 'https://acme.example.com/authz/1' } | Should -Not -Throw
             }
             It "Warns about the problem" {
                 Assert-MockCalled Write-Warning
             }
             It "Adds challenge statuses to match parent status" {
-                $auth = Get-PAAuthorizations 'https://acme.example.com/authz/1'
+                $auth = Get-PAAuthorization 'https://acme.example.com/authz/1'
                 $auth.challenges[0].status | Should -Be 'pending'
                 $auth.challenges[1].status | Should -Be 'pending'
                 $auth.challenges[2].status | Should -Be 'pending'
